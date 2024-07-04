@@ -1,19 +1,23 @@
-import { useState } from 'react'
+// import { useState } from 'react'
 import './App.css'
 import Navbar from './components/navbar.component.jsx'
-import { BrowserRouter } from 'react-router-dom'
+import { Routes, Route, BrowserRouter } from 'react-router-dom'
+import UserAuthForm from './pages/userAuthForm.page.jsx'
 
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <>
-      <BrowserRouter>
-        <Navbar />
-      </BrowserRouter>
+    
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Navbar />}>
+          <Route path='signin' element={<UserAuthForm type="signin" />} />
+          <Route path='signup' element={<UserAuthForm type="signup" />} />
+        </Route>
+      </Routes>
       
-    </>
+    </BrowserRouter>
   )
 }
 
