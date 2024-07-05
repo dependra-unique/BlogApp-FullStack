@@ -57,7 +57,7 @@
   }
 
   .input-box {
-    @apply w-[100%] rounded-md p-4 bg-grey pl-12 border border-grey focus: bg-transparent placeholder: text-black;
+    @apply w-[100%] rounded-md p-4 bg-grey pl-12 border border-grey focus:bg-transparent placeholder:text-black;
   }
 
   input:disabled, input:disabled ~ .input-icon {
@@ -65,7 +65,7 @@
   }
 
   .input-icon {
-    @apply absolute left-4 top-1/2 -translate-y-1/2;
+    @apply relative left-4 top-1/2 -translate-y-1/2 ;
   }
 
   .link {
