@@ -12,8 +12,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Navbar />}>
-          <Route path='signin' element={<UserAuthForm type="signin" />} />
-          <Route path='signup' element={<UserAuthForm type="signup" />} />
+          <Route path='signin' element={<UserAuthForm type="sign-in" />} />
+          <Route path='signup' element={<UserAuthForm type="sign-up" />} />
         </Route>
       </Routes>
       
