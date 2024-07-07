@@ -1,0 +1,7 @@
+POst "http://localhost:4000/signup"
+Content-Type: application/json
+
+{
+    "fullname": "dependra",
+    "email": "dependrak330@gmail.com"
+}
