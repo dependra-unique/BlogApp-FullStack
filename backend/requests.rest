@@ -1,4 +1,4 @@
-POst "http://localhost:4000/signup"
+POST "http://localhost:4000/signup"
 Content-Type: application/json
 
 {
