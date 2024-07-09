@@ -26,11 +26,12 @@ const userSchema = mongoose.Schema({
         username: {
             type: String,
             unique: true,
+            lowercase: true,
             minLength: [3, "Username must be 3 letters long"],
         },
         bio: {
             type: String,
-            minLength: [200, "Bio must be more than 200"],
+            maxLength: [200, "Bio must be more than 200"],
             default: "",
         },
         profileImg: {
