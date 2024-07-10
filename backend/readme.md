@@ -1,1 +1,1 @@
-.env
+hello this is my best friend

@@ -86,8 +86,39 @@ app.post("/signup", (req, res) => {
         
     })
 
-    
+    //  res.status(200).json({"status" : "okey"});
 
+})
+
+
+app.post("/signin", (req, res) => {
+
+    const {email, password} = req.body;
+
+    User.findOne({ "personalInfo.email": email})
+    .then((user) => {
+        console.log(user);
+        if(!user){
+            return res.status(403).json({"error": "email not found"})
+        }
+
+        bcrypt.compare(password, user.personalInfo.password, (err, result) => {
+
+            
+            if(err){
+                return res.status(403).json({ "error ": "error occured while login please try again"})
+            }
+            if(!result){
+                return res.status(403).json({"error": "Incorrect password"})
+            } else {
+                return res.status(200).json(formatDataToUser(user))
+            }
+        })
+    })
+    .catch((error) => {
+        console.log(error);
+        return res.status(500).json({"error" : error.message});
+    })
 })
 
 app.listen(port, () => {
