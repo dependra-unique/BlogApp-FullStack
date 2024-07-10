@@ -1,14 +1,75 @@
 import { Link } from 'react-router-dom';
 import InputBox from '../components/InputBox.jsx';
-import googleIcon from "../imgs/google.png"
+import googleIcon from "../imgs/google.png";
 import PageAnimationWrapper from '../common/PageAnimationWrapper.jsx';
+import { useRef } from 'react';
+import {Toaster, toast} from "react-hot-toast"
+import axios from 'axios';
+
 
 function UserAuthForm({ type }) {
+
+  const authForm = useRef();
+
+  
+  const userAuthThroughServer = (serverRoute, formData) => {
+
+    console.log(import.meta.env.VITE_SERVER_DOMAIN + serverRoute, formData);
+
+    axios.post(import.meta.env.VITE_SERVER_DOMAIN + serverRoute, formData)
+    .then(({data}) => {
+      console.log(data);
+    })
+    .catch(({response}) => {
+        toast.error(response.data.error);
+    })
+  }
+
+  const handleSubmit = (e) => {
+
+      e.preventDefault();
+
+      const serverRoute = type == "sign-in" ? "/signin" : "/signup";
+
+      const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;   //regex for email
+      const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;    //regex for password
+
+      //formData
+      let form = new FormData(authForm.current);
+      let formData = {};
+      
+      for(let [key, value] of form.entries()){
+        formData[key] = value;
+      }
+      console.log(formData);
+
+
+      //form validation
+      const {fullname, email, password} = formData;
+
+      if(fullname){
+        if(fullname.length < 3){
+          return toast.error("fullname must be atleast 3 character long");
+      }
+      }
+      if(!email.length){
+          return toast.error("email is required");
+      }
+      if(!emailRegex.test(email)){
+          return toast.error("email invalid");
+      }
+      if(!passwordRegex.test(password)){
+          return toast.error("password should be at least 6 to 20 characters with long a numeric, 1 lowercase and 1 uppercase")
+      }
+
+      userAuthThroughServer(serverRoute, formData);
+  }
 
   return (
     <PageAnimationWrapper keyValue={ type }>
         <section className='h-cover flex items-center justify-center'>
-          <form className='w-[80%] max-w-[400px]'>
+          <Toaster />
+          <form ref={authForm} className='w-[80%] max-w-[400px]'>
             <h1 className='text-4xl font-gelasio capitalize text-center mb-24'> 
               {type == "sign-in" ? "Welcome Back" : "Join Us Today"}
             </h1>
@@ -39,6 +100,7 @@ function UserAuthForm({ type }) {
 
               <button className='btn-dark center mt-19 px-4'
                 type='submit'
+                onClick={handleSubmit}
               >
                 { type.replace("-", " ")}
               </button>
