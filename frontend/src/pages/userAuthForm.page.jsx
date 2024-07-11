@@ -5,24 +5,27 @@ import PageAnimationWrapper from '../common/PageAnimationWrapper.jsx';
 import { useRef } from 'react';
 import {Toaster, toast} from "react-hot-toast"
 import axios from 'axios';
+import conf from "../conf/conf.js";
 
 
 function UserAuthForm({ type }) {
 
   const authForm = useRef();
 
-  
+  // const serverDomain = String(import.meta.env.VITE_SERVER_DOMAIN);
+
   const userAuthThroughServer = (serverRoute, formData) => {
 
-    console.log(import.meta.env.VITE_SERVER_DOMAIN + serverRoute, formData);
+    console.log(conf.SERVER_DOMAIN + serverRoute);
 
-    axios.post(import.meta.env.VITE_SERVER_DOMAIN + serverRoute, formData)
+    axios.post(conf.SERVER_DOMAIN + serverRoute, formData)
     .then(({data}) => {
       console.log(data);
     })
     .catch(({response}) => {
         toast.error(response.data.error);
     })
+    
   }
 
   const handleSubmit = (e) => {
