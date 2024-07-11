@@ -10,9 +10,7 @@ import conf from "../conf/conf.js";
 
 function UserAuthForm({ type }) {
 
-  const authForm = useRef();
-
-  // const serverDomain = String(import.meta.env.VITE_SERVER_DOMAIN);
+  // const authForm = useRef();
 
   const userAuthThroughServer = (serverRoute, formData) => {
 
@@ -38,7 +36,7 @@ function UserAuthForm({ type }) {
       const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;    //regex for password
 
       //formData
-      let form = new FormData(authForm.current);
+      let form = new FormData(formElement);
       let formData = {};
       
       for(let [key, value] of form.entries()){
@@ -72,7 +70,7 @@ function UserAuthForm({ type }) {
     <PageAnimationWrapper keyValue={ type }>
         <section className='h-cover flex items-center justify-center'>
           <Toaster />
-          <form ref={authForm} className='w-[80%] max-w-[400px]'>
+          <form id='formElement' className='w-[80%] max-w-[400px]'>
             <h1 className='text-4xl font-gelasio capitalize text-center mb-24'> 
               {type == "sign-in" ? "Welcome Back" : "Join Us Today"}
             </h1>
