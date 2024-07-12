@@ -1,24 +1,32 @@
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import InputBox from '../components/InputBox.jsx';
 import googleIcon from "../imgs/google.png";
 import PageAnimationWrapper from '../common/PageAnimationWrapper.jsx';
-import { useRef } from 'react';
+import { useContext, useRef } from 'react';
 import {Toaster, toast} from "react-hot-toast"
 import axios from 'axios';
 import conf from "../conf/conf.js";
+import { storeInSession } from '../common/session.jsx';
+import { UserContext } from '../App.jsx';
 
 
 function UserAuthForm({ type }) {
 
   // const authForm = useRef();
 
+  const { userAuth:{ accessToken }, setUserAuth } = useContext(UserContext);
+
+  console.log(accessToken);
+
   const userAuthThroughServer = (serverRoute, formData) => {
 
-    console.log(conf.SERVER_DOMAIN + serverRoute);
+    // console.log(conf.SERVER_DOMAIN + serverRoute);
 
     axios.post(conf.SERVER_DOMAIN + serverRoute, formData)
     .then(({data}) => {
-      console.log(data);
+      storeInSession("user", JSON.stringify(data));
+      // console.log(sessionStorage);
+      setUserAuth(data)
     })
     .catch(({response}) => {
         toast.error(response.data.error);
@@ -42,7 +50,7 @@ function UserAuthForm({ type }) {
       for(let [key, value] of form.entries()){
         formData[key] = value;
       }
-      console.log(formData);
+      // console.log(formData);
 
 
       //form validation
@@ -67,6 +75,10 @@ function UserAuthForm({ type }) {
   }
 
   return (
+
+    accessToken ?
+      <Navigate to="/" />
+    :
     <PageAnimationWrapper keyValue={ type }>
         <section className='h-cover flex items-center justify-center'>
           <Toaster />
