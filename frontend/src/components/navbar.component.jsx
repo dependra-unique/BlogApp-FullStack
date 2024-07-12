@@ -8,8 +8,19 @@ function Navbar() {
 
     const [searchBoxVisibility , setSearchBoxVisibility] = useState(false);
 
-    const {userAuth, userAuth: {accessToken, profileImg}} = useContext(UserContext)
+    const [userNavPanel, setUserNavPanel] = useState(false);
 
+    const {userAuth, userAuth: {accessToken, profileImg}} = useContext(UserContext);
+
+    const handeUserNavPanel = () => {
+        setUserNavPanel(current => !current);
+    }
+
+    const handleBlur = () => {
+        setTimeout(() => {
+            setUserNavPanel(false);
+        }, 200)
+    }
   return (
         <>
             <nav className='navbar'>
@@ -51,12 +62,19 @@ function Navbar() {
                                 </button>
                             </Link>
 
-                            <div className='relative'>
+                            <div 
+                            className='relative'
+                            onClick={handeUserNavPanel}
+                            onBlur={handleBlur}
+                            >
                                 <button className='w-12 h-12 mt-1'> 
                                     <img src={profileImg} className='w-full h-full object-cover rounded-full' />
                                 </button>
 
-                                <UserNavigationPanel />
+                                {
+                                    userNavPanel ? <UserNavigationPanel /> : ""
+                                }
+                                
                             </div>
                         </>
                         :
